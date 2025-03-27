@@ -21,6 +21,8 @@ export default {
 </script>
 
 <style scoped>
+@import 'flatpickr/dist/flatpickr.css';
+
 label {
   display: block;
   margin-top: 10px;

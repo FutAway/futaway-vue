@@ -1,28 +1,92 @@
-<!-- src/components/FutawaySidebar.vue -->
 <template>
   <div class="sidebar">
-    <h3>Número de viajeros</h3>
-    <p>{{ wizardData.personas }} viajeros</p>
+    <!-- Número de viajeros -->
+    <div class="sidebar-item">
+      <img :src="iconPersonas" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Número de viajeros</div>
+        <div class="sidebar-value">
+          {{ wizardData.personas ? wizardData.personas + ' viajeros' : '-' }}
+        </div>
+      </div>
+    </div>
 
-    <h3>Fecha</h3>
-    <p v-if="wizardData.startDate">{{ wizardData.startDate }}</p>
-    <p v-else>No seleccionada</p>
+    <!-- Fecha -->
+    <div class="sidebar-item">
+      <img :src="iconFecha" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Fecha</div>
+        <div class="sidebar-value">
+          {{ wizardData.startDate ? wizardData.startDate : '-' }}
+        </div>
+      </div>
+    </div>
 
-    <h3>Tipo de jornada</h3>
-    <p>{{ wizardData.jornada === 'toda' ? 'Toda la jornada' : 'Sin Viernes ni Lunes' }}</p>
+    <!-- Tipo de Jornada -->
+    <div class="sidebar-item">
+      <img :src="iconJornada" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Tipo de Jornada</div>
+        <div class="sidebar-value">
+          {{ wizardData.jornada ? formatoJornada : '-' }}
+        </div>
+      </div>
+    </div>
 
-    <h3>Tipo de Hotel</h3>
-    <p>{{ wizardData.hotel === 'estandar' ? 'Hotel Estándar' : 'Hotel Superior' }}</p>
+    <!-- Tipo de Hotel -->
+    <div class="sidebar-item">
+      <img :src="iconHotel" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Tipo de Hotel</div>
+        <div class="sidebar-value">
+          {{ wizardData.hotel ? formatoHotel : '-' }}
+        </div>
+      </div>
+    </div>
 
-    <h3>Descartes</h3>
-    <p>{{ wizardData.descartes.length }} descartes</p>
+    <!-- Descartes de destinos -->
+    <div class="sidebar-item sidebar-descartes">
+      <img :src="iconDescartes" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Descartes de destinos</div>
+        <div class="sidebar-value">
+          <!-- Muestra la cantidad o '-' -->
+          {{ (wizardData.descartes && wizardData.descartes.length > 0)
+             ? wizardData.descartes.length + ' descartes'
+             : '-'
+          }}
+        </div>
+      </div>
+    </div>
 
-    <h3>Precio Final</h3>
-    <p class="final-price">{{ finalPrice }} €</p>
+    <!-- Espacio extra antes del precio -->
+    <div class="sidebar-spacer"></div>
+
+    <!-- Título precio final -->
+    <div class="sidebar-price-title">Precio final</div>
+
+    <!-- Precio Final en grande -->
+    <div class="sidebar-price">
+      {{ finalPrice.toLocaleString() }}€
+    </div>
+
+    <!-- Línea de separación -->
+    <hr class="sidebar-separator" />
+
+    <!-- Precio por viajero (alineado a la derecha) -->
+    <div class="sidebar-price-person">
+      <span v-if="wizardData.personas">
+        {{ (finalPrice / wizardData.personas).toLocaleString() }}€ por viajero
+      </span>
+      <span v-else>-</span>
+    </div>
   </div>
 </template>
 
 <script>
+import porteriaEmpty from '@/assets/porteriaEmpty.png'
+import porteriaBall from '@/assets/porteriaBall.png'
+
 export default {
   name: "FutawaySidebar",
   props: {
@@ -33,6 +97,50 @@ export default {
     finalPrice: {
       type: Number,
       required: true
+    },
+    step: {
+      type: Number,
+      required: true
+    }
+  },
+  computed: {
+    // Iconos: si la propiedad está definida, porteriaBall; si no, porteriaEmpty
+    iconPersonas() {
+      return this.wizardData.personas ? porteriaBall : porteriaEmpty
+    },
+    iconFecha() {
+      return this.wizardData.startDate ? porteriaBall : porteriaEmpty
+    },
+    iconJornada() {
+      return this.wizardData.jornada ? porteriaBall : porteriaEmpty
+    },
+    iconHotel() {
+      return this.wizardData.hotel ? porteriaBall : porteriaEmpty
+    },
+    iconDescartes() {
+      return (this.wizardData.descartes && this.wizardData.descartes.length > 0)
+        ? porteriaBall
+        : porteriaEmpty
+    },
+
+    /* Formato de jornada */
+    formatoJornada() {
+      if (this.wizardData.jornada === 'toda') {
+        return 'Toda la jornada'
+      } else if (this.wizardData.jornada === 'sin-viernes-lunes') {
+        return 'Jornada sin viernes ni lunes'
+      }
+      return this.wizardData.jornada
+    },
+
+    /* Formato de hotel */
+    formatoHotel() {
+      if (this.wizardData.hotel === 'estandar') {
+        return 'Hotel Estándar'
+      } else if (this.wizardData.hotel === 'superior') {
+        return 'Hotel Superior'
+      }
+      return this.wizardData.hotel
     }
   }
 }
@@ -44,14 +152,78 @@ export default {
   background-color: #f9f9f9;
   border-radius: 8px;
   padding: 20px;
+  font-family: "DM Sans", sans-serif;
+  color: #262626;
 }
-.sidebar h3 {
-  margin-top: 10px;
+
+.sidebar-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.sidebar-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  margin-top: 2px;
+}
+
+.sidebar-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.sidebar-label {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.sidebar-value {
+  font-size: 0.9rem;
+}
+
+/* Espacio extra antes de precio */
+.sidebar-descartes {
+  margin-bottom: 30px;
+}
+
+.sidebar-spacer {
+  height: 10px;
+}
+
+/* Título de "Precio final" */
+.sidebar-price-title {
+  font-size: 0.9rem;
+  font-weight: bold;
   margin-bottom: 5px;
 }
-.final-price {
+
+/* Precio final (triple tamaño) */
+.sidebar-price {
+  font-size: 2.4rem;
   font-weight: bold;
-  font-size: 1.2rem;
-  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Línea de separación */
+.sidebar-separator {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+/* Precio por viajero */
+.sidebar-price-person {
+  font-size: 0.8rem;
+  text-align: right;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
 }
 </style>

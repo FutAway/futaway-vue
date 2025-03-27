@@ -1,4 +1,4 @@
-const { defineConfig } = require('@vue/cli-service')
-module.exports = defineConfig({
-  transpileDependencies: true
-})
+// vue.config.js
+module.exports = {
+  // Agrega configuraciones personalizadas si las necesitas.
+}

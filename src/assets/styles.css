@@ -1,0 +1,15 @@
+:root {
+    /* Paleta de colores */
+    --bg-color: #fbfbfb;       /* Fondo blanco */
+    --text-color: #262626;     /* Texto en negro carbón */
+    --accent-color: #ffef98;   /* Acento en amarillo */
+  }
+  
+  /* Estilos globales */
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  }
