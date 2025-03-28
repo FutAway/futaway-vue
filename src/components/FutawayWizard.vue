@@ -1,6 +1,6 @@
 <template>
   <div class="wizard-container">
-    <!-- Sidebar a la izquierda: se muestra solo si no es el Step 1 -->
+    <!-- Sidebar se muestra solo si step !== 1 -->
     <FutawaySidebar
       v-if="step !== 1"
       :wizard-data="wizardData"
@@ -16,21 +16,27 @@
         :wizard-data="wizardData"
         @goNextStep="nextStep"
       />
-      <!-- Step2 -->
+
+      <!-- Step2 con rango y sin botones amarillos -->
       <FutawayStep2
         v-else-if="step === 2"
         :wizard-data="wizardData"
+        @updateRange="handleRange"
+        @goNextStep="nextStep"
       />
+
       <!-- Step3 -->
       <FutawayStep3
         v-else-if="step === 3"
         :wizard-data="wizardData"
       />
+
       <!-- Step4 -->
       <FutawayStep4
         v-else-if="step === 4"
         :wizard-data="wizardData"
       />
+
       <!-- Step5 -->
       <FutawayStep5
         v-else-if="step === 5"
@@ -38,8 +44,9 @@
         :final-price="finalPrice"
       />
 
-      <!-- Botones de navegación (solo se muestran si step !== 1) -->
-      <div class="wizard-navigation" v-if="step !== 1">
+      <!-- Navegación amarilla: oculta en step 1 y step 2 
+           Dejas solo un CTA negro en Step2 -->
+      <div class="wizard-navigation" v-if="step !== 1 && step !== 2">
         <button v-if="step > 1" @click="prevStep">Atrás</button>
         <button v-if="step < finalStep" @click="nextStep">Continuar</button>
         <button v-else @click="finalizeWizard">Finalizar</button>
@@ -49,7 +56,6 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-mutating-props */
 import FutawaySidebar from './FutawaySidebar.vue'
 import FutawayStep1 from './FutawayStep1.vue'
 import FutawayStep2 from './FutawayStep2.vue'
@@ -75,10 +81,12 @@ export default {
       wizardData: {
         personas: "",
         dias: "",
+        // Guardamos startDate y endDate para mostrar el rango en la Sidebar
         startDate: "",
-        categoria: "primera-segunda",  // O pon "" si quieres sin valor por defecto
-        jornada: "",                   // Sin valor predeterminado
-        hotel: "",                     // Sin valor predeterminado
+        endDate: "",
+        categoria: "primera-segunda", 
+        jornada: "",
+        hotel: "",
         desayuno: false,
         descartes: [],
         nombre: "",
@@ -92,44 +100,42 @@ export default {
   },
   computed: {
     finalPrice() {
-      // Convierto personas a número (si está vacío => 0)
       const numPersonas = Number(this.wizardData.personas) || 0;
       let price = 0;
 
-      // Precio base
+      // Base
       price += (config.basePrice || 0) * numPersonas;
 
-      // Recargo solo si es 1 persona
+      // 1 persona
       if (numPersonas === 1) {
         price += config.soloCost || 0;
       }
 
-      // Recargo por duración => config.durationCost[dias] || 0
+      // Duración
       const durCost = config.durationCost[this.wizardData.dias] || 0;
       price += durCost * numPersonas;
 
-      // Categoría (opcional, si la usas: "primera-segunda" / "solo-segunda")
-      // Si quieres dejarla vacía, haz => config.categoryCost[this.wizardData.categoria] || 0
+      // Categoría
       if (this.wizardData.categoria) {
         const catCost = config.categoryCost[this.wizardData.categoria] || 0;
         price += catCost * numPersonas;
       }
 
-      // Jornada => config.jornadaCost[jornada] || 0
+      // Jornada
       const jornadaCost = config.jornadaCost[this.wizardData.jornada] || 0;
       price += jornadaCost * numPersonas;
 
-      // Hotel => config.hotelCost[hotel] || 0
+      // Hotel
       const hotelCost = config.hotelCost[this.wizardData.hotel] || 0;
       price += hotelCost * numPersonas;
 
-      // Desayuno => if (desayuno === true) => cost
+      // Desayuno
       if (this.wizardData.desayuno === true) {
         const desCost = config.desayunoCost[true] || 0;
         price += desCost * numPersonas;
       }
 
-      // Descartes => wizardData.descartes?.length || 0
+      // Descartes
       const totalDescartes = this.wizardData.descartes?.length || 0;
       const free = config.freeDiscardCount || 3;
       const extraDescartes = totalDescartes - free;
@@ -142,6 +148,11 @@ export default {
     }
   },
   methods: {
+    // Recibimos el rango (start, end) de Step2
+    handleRange(range) {
+      this.wizardData.startDate = range.start;
+      this.wizardData.endDate = range.end;
+    },
     nextStep() {
       if (this.step < this.finalStep) {
         this.step++;
@@ -153,7 +164,10 @@ export default {
       }
     },
     finalizeWizard() {
-      alert(`Reserva completada.\nPrecio Final: ${this.finalPrice} €\nDatos: ${JSON.stringify(this.wizardData, null, 2)}`);
+      alert(
+        `Reserva completada.\nPrecio Final: ${this.finalPrice} €\n` +
+        `Datos: ${JSON.stringify(this.wizardData, null, 2)}`
+      );
     }
   }
 }
@@ -162,21 +176,23 @@ export default {
 <style scoped>
 .wizard-container {
   display: flex;
-  gap: 20px;
+  gap: 10px; /* Menos espacio horizontal */
 }
 .wizard-steps {
   flex: 1;
   background-color: #fff;
   border-radius: 8px;
-  padding: 20px;
+  /* Menos padding para un diseño más compacto */
+  padding: 15px; 
 }
 .wizard-navigation {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   gap: 10px;
 }
+/* Botones amarillos visibles en Steps >2, ocultos en Step2 */
 button {
-  padding: 10px 20px;
+  padding: 8px 16px;
   background-color: #fff176;
   border: none;
   border-radius: 4px;

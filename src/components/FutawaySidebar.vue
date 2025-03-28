@@ -11,13 +11,24 @@
       </div>
     </div>
 
-    <!-- Fecha -->
+    <!-- Fecha de inicio -->
     <div class="sidebar-item">
       <img :src="iconFecha" class="sidebar-icon" alt="icono porteria" />
       <div class="sidebar-text">
-        <div class="sidebar-label">Fecha</div>
+        <div class="sidebar-label">Fecha de inicio</div>
         <div class="sidebar-value">
-          {{ wizardData.startDate ? wizardData.startDate : '-' }}
+          {{ fechaInicioFormateada }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Fecha final -->
+    <div class="sidebar-item">
+      <img :src="iconFechaFinal" class="sidebar-icon" alt="icono porteria" />
+      <div class="sidebar-text">
+        <div class="sidebar-label">Fecha final</div>
+        <div class="sidebar-value">
+          {{ fechaFinalFormateada }}
         </div>
       </div>
     </div>
@@ -50,7 +61,6 @@
       <div class="sidebar-text">
         <div class="sidebar-label">Descartes de destinos</div>
         <div class="sidebar-value">
-          <!-- Muestra la cantidad o '-' -->
           {{ (wizardData.descartes && wizardData.descartes.length > 0)
              ? wizardData.descartes.length + ' descartes'
              : '-'
@@ -104,12 +114,26 @@ export default {
     }
   },
   computed: {
-    // Iconos: si la propiedad está definida, porteriaBall; si no, porteriaEmpty
+    // Mostrar fecha de inicio en formato "DD-MM-YYYY"
+    fechaInicioFormateada() {
+      if (!this.wizardData.startDate) return '-'
+      return this.formatearFechaDMY(this.wizardData.startDate)
+    },
+    // Mostrar fecha final en formato "DD-MM-YYYY"
+    fechaFinalFormateada() {
+      if (!this.wizardData.endDate) return '-'
+      return this.formatearFechaDMY(this.wizardData.endDate)
+    },
+
+    // Iconos
     iconPersonas() {
       return this.wizardData.personas ? porteriaBall : porteriaEmpty
     },
     iconFecha() {
       return this.wizardData.startDate ? porteriaBall : porteriaEmpty
+    },
+    iconFechaFinal() {
+      return this.wizardData.endDate ? porteriaBall : porteriaEmpty
     },
     iconJornada() {
       return this.wizardData.jornada ? porteriaBall : porteriaEmpty
@@ -141,6 +165,13 @@ export default {
         return 'Hotel Superior'
       }
       return this.wizardData.hotel
+    }
+  },
+  methods: {
+    // Función para pasar de "YYYY-MM-DD" a "DD-MM-YYYY"
+    formatearFechaDMY(yyyy_mm_dd) {
+      const [year, month, day] = yyyy_mm_dd.split('-')
+      return `${day}-${month}-${year}`
     }
   }
 }
@@ -220,7 +251,7 @@ export default {
   color: #666;
 }
 
-/* Responsive */
+/* Ajustes responsivos */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
