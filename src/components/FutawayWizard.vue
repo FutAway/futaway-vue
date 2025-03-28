@@ -1,6 +1,6 @@
 <template>
   <div class="wizard-container">
-    <!-- Sidebar se muestra solo si step !== 1 -->
+    <!-- Barra lateral: solo aparece si no es step 1 -->
     <FutawaySidebar
       v-if="step !== 1"
       :wizard-data="wizardData"
@@ -17,7 +17,7 @@
         @goNextStep="nextStep"
       />
 
-      <!-- Step2 con rango y sin botones amarillos -->
+      <!-- Step2 (Calendario con rango, sin botones amarillos) -->
       <FutawayStep2
         v-else-if="step === 2"
         :wizard-data="wizardData"
@@ -25,10 +25,17 @@
         @goNextStep="nextStep"
       />
 
-      <!-- Step3 -->
+      <!-- Step3 (Personalización) 
+           Recibe wizardData pero no lo muta. Emite eventos 
+           que el Wizard escucha para actualizar wizardData. -->
       <FutawayStep3
         v-else-if="step === 3"
         :wizard-data="wizardData"
+        @updateCategoria="updateCategoria"
+        @updateJornada="updateJornada"
+        @updateHotel="updateHotel"
+        @updateDesayuno="updateDesayuno"
+        @goNextStep="nextStep"
       />
 
       <!-- Step4 -->
@@ -44,9 +51,9 @@
         :final-price="finalPrice"
       />
 
-      <!-- Navegación amarilla: oculta en step 1 y step 2 
-           Dejas solo un CTA negro en Step2 -->
-      <div class="wizard-navigation" v-if="step !== 1 && step !== 2">
+      <!-- Botones de navegación amarillos: 
+           Ocultos en steps 1, 2 y 3 (porque en Step3 hay un CTA negro propio) -->
+      <div class="wizard-navigation" v-if="step !== 1 && step !== 2 && step !== 3">
         <button v-if="step > 1" @click="prevStep">Atrás</button>
         <button v-if="step < finalStep" @click="nextStep">Continuar</button>
         <button v-else @click="finalizeWizard">Finalizar</button>
@@ -62,6 +69,7 @@ import FutawayStep2 from './FutawayStep2.vue'
 import FutawayStep3 from './FutawayStep3.vue'
 import FutawayStep4 from './FutawayStep4.vue'
 import FutawayStep5 from './FutawayStep5.vue'
+
 import config from '@/config/config.js'
 
 export default {
@@ -81,13 +89,17 @@ export default {
       wizardData: {
         personas: "",
         dias: "",
-        // Guardamos startDate y endDate para mostrar el rango en la Sidebar
+        // Fechas (seleccionadas en Step2)
         startDate: "",
         endDate: "",
+
+        // Opciones de Step3
         categoria: "primera-segunda", 
         jornada: "",
         hotel: "",
         desayuno: false,
+
+        // Otros datos
         descartes: [],
         nombre: "",
         apellidos: "",
@@ -103,15 +115,15 @@ export default {
       const numPersonas = Number(this.wizardData.personas) || 0;
       let price = 0;
 
-      // Base
+      // Precio base
       price += (config.basePrice || 0) * numPersonas;
 
-      // 1 persona
+      // Recargo si solo 1 persona
       if (numPersonas === 1) {
         price += config.soloCost || 0;
       }
 
-      // Duración
+      // Recargo por duración
       const durCost = config.durationCost[this.wizardData.dias] || 0;
       price += durCost * numPersonas;
 
@@ -148,11 +160,27 @@ export default {
     }
   },
   methods: {
-    // Recibimos el rango (start, end) de Step2
+    // Recibimos el rango de Step2
     handleRange(range) {
       this.wizardData.startDate = range.start;
       this.wizardData.endDate = range.end;
     },
+    // Métodos para actualizar wizardData 
+    // desde Step3 sin mutar props en Step3
+    updateCategoria(value) {
+      this.wizardData.categoria = value;
+    },
+    updateJornada(value) {
+      this.wizardData.jornada = value;
+    },
+    updateHotel(value) {
+      this.wizardData.hotel = value;
+    },
+    updateDesayuno(value) {
+      this.wizardData.desayuno = value;
+    },
+
+    // Navegación
     nextStep() {
       if (this.step < this.finalStep) {
         this.step++;
@@ -178,19 +206,23 @@ export default {
   display: flex;
   gap: 10px; /* Menos espacio horizontal */
 }
+
+/* Contenedor principal de los pasos */
 .wizard-steps {
   flex: 1;
   background-color: #fff;
   border-radius: 8px;
-  /* Menos padding para un diseño más compacto */
-  padding: 15px; 
+  padding: 15px; /* Espacio un poco más ajustado */
 }
+
+/* Barra de navegación amarilla, oculta en Steps 1, 2 y 3 */
 .wizard-navigation {
   margin-top: 10px;
   display: flex;
   gap: 10px;
 }
-/* Botones amarillos visibles en Steps >2, ocultos en Step2 */
+
+/* Botones amarillos para Steps 4 y 5 */
 button {
   padding: 8px 16px;
   background-color: #fff176;
