@@ -9,9 +9,15 @@
       <div class="calendar-block" ref="calendar"></div>
     </div>
 
-    <!-- CTA negro (doble de tamaño) -->
+    <!-- CTA negro (la mitad de tamaño y deshabilitado hasta que se seleccione fecha) -->
     <div class="cta-wrapper">
-      <button class="cta-black" @click="goNextStep">Continuar</button>
+      <button 
+        class="cta-black" 
+        :disabled="!isDateSelected"
+        @click="goNextStep"
+      >
+        Continuar
+      </button>
     </div>
   </div>
 </template>
@@ -34,20 +40,27 @@ export default {
       titleLarge: "¡Pitido inicial!",
       titleSmall: "Elige el día en el que arrancará tu aventura FutAway.",
       fpInstance: null,
-      isSettingRange: false // para evitar recursión
-      // blockedDates: []  // si quisieras bloquear algo, lo pondrías aquí
+      isSettingRange: false, // Evita recursión al llamar setDate
+      isDateSelected: false  // Para habilitar/deshabilitar el CTA
+      // blockedDates: []  // Si quisieras bloquear alguna fecha
     };
   },
   methods: {
     onDateChange(selectedDates) {
+      // Si no hay fechas seleccionadas, salimos
       if (!selectedDates.length) return;
 
+      // Marcamos que al menos una fecha se ha seleccionado
+      this.isDateSelected = true;
+
+      // Fecha inicial
       const start = selectedDates[0];
       const year = start.getFullYear();
       const month = String(start.getMonth() + 1).padStart(2, "0");
       const day = String(start.getDate()).padStart(2, "0");
       const startDateStr = `${year}-${month}-${day}`;
 
+      // Calculamos la fecha final en función de wizardData.dias
       const dur = Number(this.wizardData.dias) || 0;
       const end = new Date(start);
       end.setDate(end.getDate() + dur - 1);
@@ -57,6 +70,7 @@ export default {
       const dayEnd = String(end.getDate()).padStart(2, "0");
       const endDateStr = `${yearEnd}-${monthEnd}-${dayEnd}`;
 
+      // Evitar recursión infinita si volvemos a setDate
       if (!this.isSettingRange) {
         this.isSettingRange = true;
         this.fpInstance.setDate([start, end], true);
@@ -66,6 +80,7 @@ export default {
       // Emitimos el rango al padre
       this.$emit("updateRange", { start: startDateStr, end: endDateStr });
     },
+
     goNextStep() {
       this.$emit("goNextStep");
     }
@@ -78,8 +93,8 @@ export default {
       dateFormat: "Y-m-d",
       mode: "range",
       onChange: this.onDateChange,
-      locale: Spanish // Calendario en español
-      // disable: this.blockedDates // si quisieras bloquear fechas
+      locale: Spanish
+      // disable: this.blockedDates // Si quisieras bloquear fechas
     });
   },
   beforeUnmount() {
@@ -110,7 +125,7 @@ export default {
   color: #555;
 }
 
-/* Para centrar el calendario totalmente */
+/* Para centrar el calendario completamente */
 .calendar-wrapper {
   display: flex;
   justify-content: center;
@@ -123,33 +138,40 @@ export default {
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* CTA negro doble de tamaño */
+/* CTA negro la mitad de tamaño */
 .cta-wrapper {
   margin-top: 20px;
+  text-align: center;
 }
 .cta-black {
   background-color: #000;
   color: #fff;
-  padding: 20px 48px; /* doble tamaño */
-  font-size: 1.1rem;
+  padding: 10px 24px; /* Mitad del anterior (antes era 20px 48px) */
+  font-size: 0.9rem; /* Un poco más pequeño */
   border: none;
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
 }
 
+/* Deshabilitado */
+.cta-black:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Días seleccionados en amarillo */
-.flatpickr-day.selected,
-.flatpickr-day.startRange,
-.flatpickr-day.endRange,
-.flatpickr-day.inRange {
+:deep(.flatpickr-day.selected),
+:deep(.flatpickr-day.startRange),
+:deep(.flatpickr-day.endRange),
+:deep(.flatpickr-day.inRange) {
   background: #fff176 !important; /* tu amarillo */
   color: #262626 !important;
   border-radius: 4px !important;
 }
 
-/* Si quieres ocultar la cabecera (el botón blanco):
-.flatpickr-current-month {
+/* Si quieres ocultar la cabecera (el botón blanco) de Flatpickr:
+:deep(.flatpickr-current-month) {
   display: none;
 }
 */

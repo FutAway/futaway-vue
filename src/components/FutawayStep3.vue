@@ -6,9 +6,14 @@
       <p class="section-desc">{{ sec1Desc }}</p>
 
       <div class="options-row">
-        <!-- Partidos de Primera y Segunda -->
+        <!-- Opción 1 -->
         <div class="option-card" @click="emitCategoria('primera-segunda')">
-          <img :src="sec1Option1.img" alt="Imagen Fútbol" class="option-img" />
+          <div class="image-container">
+            <img :src="sec1Option1.img" alt="Imagen Fútbol" class="option-img" />
+            <div v-if="sec1Option1.recargo" class="recargo-badge">
+              +{{ sec1Option1.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec1Option1.title }}</div>
           <div class="option-text-small">{{ sec1Option1.subtitle }}</div>
           <input
@@ -19,9 +24,14 @@
           />
         </div>
 
-        <!-- Solo partidos de Segunda -->
+        <!-- Opción 2 -->
         <div class="option-card" @click="emitCategoria('solo-segunda')">
-          <img :src="sec1Option2.img" alt="Imagen Fútbol" class="option-img" />
+          <div class="image-container">
+            <img :src="sec1Option2.img" alt="Imagen Fútbol" class="option-img" />
+            <div v-if="sec1Option2.recargo" class="recargo-badge">
+              +{{ sec1Option2.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec1Option2.title }}</div>
           <div class="option-text-small">{{ sec1Option2.subtitle }}</div>
           <input
@@ -42,9 +52,14 @@
       <p class="section-desc">{{ sec2Desc }}</p>
 
       <div class="options-row">
-        <!-- Toda la jornada -->
+        <!-- Opción 1 -->
         <div class="option-card" @click="emitJornada('toda')">
-          <img :src="sec2Option1.img" alt="Imagen Jornada" class="option-img" />
+          <div class="image-container">
+            <img :src="sec2Option1.img" alt="Imagen Jornada" class="option-img" />
+            <div v-if="sec2Option1.recargo" class="recargo-badge">
+              +{{ sec2Option1.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec2Option1.title }}</div>
           <div class="option-text-small">{{ sec2Option1.subtitle }}</div>
           <input
@@ -55,9 +70,14 @@
           />
         </div>
 
-        <!-- Jornada sin viernes ni lunes -->
+        <!-- Opción 2 -->
         <div class="option-card" @click="emitJornada('sin-viernes-lunes')">
-          <img :src="sec2Option2.img" alt="Imagen Jornada" class="option-img" />
+          <div class="image-container">
+            <img :src="sec2Option2.img" alt="Imagen Jornada" class="option-img" />
+            <div v-if="sec2Option2.recargo" class="recargo-badge">
+              +{{ sec2Option2.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec2Option2.title }}</div>
           <div class="option-text-small">{{ sec2Option2.subtitle }}</div>
           <input
@@ -74,13 +94,20 @@
 
     <!-- Sección 3: ¿Cómo quieres que sea tu alojamiento? -->
     <div class="section">
-      <h2 class="section-title">{{ sec3Title }}</h2>
-      <p class="section-desc">{{ sec3Desc }}</p>
+      <!-- Aumentamos el espacio entre título y las opciones -->
+      <h2 class="section-title" style="margin-bottom: 20px;">
+        {{ sec3Title }}
+      </h2>
 
       <div class="options-row">
         <!-- Hotel Estándar -->
         <div class="option-card" @click="emitHotel('estandar')">
-          <img :src="sec3Option1.img" alt="Imagen Hotel" class="option-img" />
+          <div class="image-container">
+            <img :src="sec3Option1.img" alt="Imagen Hotel" class="option-img" />
+            <div v-if="sec3Option1.recargo" class="recargo-badge">
+              +{{ sec3Option1.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec3Option1.title }}</div>
           <div class="option-text-small">{{ sec3Option1.subtitle }}</div>
           <input
@@ -93,7 +120,12 @@
 
         <!-- Hotel Superior -->
         <div class="option-card" @click="emitHotel('superior')">
-          <img :src="sec3Option2.img" alt="Imagen Hotel" class="option-img" />
+          <div class="image-container">
+            <img :src="sec3Option2.img" alt="Imagen Hotel" class="option-img" />
+            <div v-if="sec3Option2.recargo" class="recargo-badge">
+              +{{ sec3Option2.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec3Option2.title }}</div>
           <div class="option-text-small">{{ sec3Option2.subtitle }}</div>
           <input
@@ -106,14 +138,22 @@
       </div>
     </div>
 
-    <hr class="long-separator" />
+    <!-- Barra separadora corta y centrada -->
+    <hr class="short-separator" />
+
+    <div class="double-space"></div>
 
     <!-- Sección 4: ¿Quieres incluir desayuno? -->
     <div class="section">
       <div class="options-row">
         <!-- Sin desayuno -->
         <div class="option-card" @click="emitDesayuno(false)">
-          <img :src="sec4Option1.img" alt="Imagen Desayuno" class="option-img" />
+          <div class="image-container">
+            <img :src="sec4Option1.img" alt="Imagen Desayuno" class="option-img" />
+            <div v-if="sec4Option1.recargo" class="recargo-badge">
+              +{{ sec4Option1.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec4Option1.title }}</div>
           <div class="option-text-small">{{ sec4Option1.subtitle }}</div>
           <input
@@ -126,7 +166,12 @@
 
         <!-- Desayuno incluido -->
         <div class="option-card" @click="emitDesayuno(true)">
-          <img :src="sec4Option2.img" alt="Imagen Desayuno" class="option-img" />
+          <div class="image-container">
+            <img :src="sec4Option2.img" alt="Imagen Desayuno" class="option-img" />
+            <div v-if="sec4Option2.recargo" class="recargo-badge">
+              +{{ sec4Option2.recargo }}€
+            </div>
+          </div>
           <div class="option-text-large">{{ sec4Option2.title }}</div>
           <div class="option-text-small">{{ sec4Option2.subtitle }}</div>
           <input
@@ -139,9 +184,15 @@
       </div>
     </div>
 
+    <!-- Dos CTAs: Atrás (amarillo) y Continuar (negro), centrados -->
     <div class="cta-wrapper">
-      <!-- Botón negro, deshabilitado hasta que todo esté seleccionado -->
-      <button 
+      <button
+        class="cta-back"
+        @click="goPrevStep"
+      >
+        Atrás
+      </button>
+      <button
         class="cta-black"
         :disabled="!isAllSelected"
         @click="goNextStep"
@@ -163,60 +214,65 @@ export default {
   },
   data() {
     return {
-      /* Ejemplo de datos e imágenes, podrías cargarlos de un CMS */
       sec1Title: "Fútbol de categoría",
       sec1Desc: "Eliges optar solo a partidos de Segunda División y ahorra en tu experiencia.",
       sec1Option1: {
-        img: "https://via.placeholder.com/300x169?text=Futbol+Primera+Segunda", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Futbol",
         title: "Partidos de Primera y Segunda",
-        subtitle: "(Precio base)"
+        subtitle: "",
+        recargo: 0
       },
       sec1Option2: {
-        img: "https://via.placeholder.com/300x169?text=Futbol+Solo+Segunda", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Futbol",
         title: "Solo partidos de Segunda",
-        subtitle: "(-25€ por persona)"
+        subtitle: "",
+        recargo: 25
       },
 
       sec2Title: "¿Partidos de viernes y lunes?",
       sec2Desc: "Elige qué día quieres que se dispute el partido al que asistirás.",
       sec2Option1: {
-        img: "https://via.placeholder.com/300x169?text=Futbol+Toda+Jornada", 
-        title: "Toda la Jornada",
-        subtitle: "(Sin recargo)"
+        img: "https://via.placeholder.com/300x169?text=Imagen+Jornada",
+        title: "Toda la jornada",
+        subtitle: "",
+        recargo: 0
       },
       sec2Option2: {
-        img: "https://via.placeholder.com/300x169?text=Futbol+Sin+Viernes+Lunes", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Jornada",
         title: "Jornada sin viernes ni lunes",
-        subtitle: "(+25€ por persona)"
+        subtitle: "",
+        recargo: 25
       },
 
       sec3Title: "¿Cómo quieres que sea tu alojamiento?",
-      sec3Desc: "",
       sec3Option1: {
-        img: "https://via.placeholder.com/300x169?text=Hotel+Estandar", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Hotel",
         title: "Hotel Estándar",
-        subtitle: "Asegura un alojamiento de al menos 3 estrellas."
+        subtitle: "Aseguran al menos 3 estrellas.",
+        recargo: 0
       },
       sec3Option2: {
-        img: "https://via.placeholder.com/300x169?text=Hotel+Superior", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Hotel",
         title: "Hotel Superior",
-        subtitle: "(+40€ por persona)\nAsegura un alojamiento de al menos 4 estrellas."
+        subtitle: "Aseguran al menos 4 estrellas.",
+        recargo: 40
       },
 
       sec4Option1: {
-        img: "https://via.placeholder.com/300x169?text=Sin+Desayuno", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Desayuno",
         title: "Sin desayuno",
-        subtitle: ""
+        subtitle: "",
+        recargo: 0
       },
       sec4Option2: {
-        img: "https://via.placeholder.com/300x169?text=Desayuno+Incluido", 
+        img: "https://via.placeholder.com/300x169?text=Imagen+Desayuno",
         title: "Desayuno incluido",
-        subtitle: "(+6€ por persona)"
+        subtitle: "",
+        recargo: 6
       }
     };
   },
   computed: {
-    // Habilitamos el botón solo si todas las selecciones están hechas
     isAllSelected() {
       return (
         this.wizardData.categoria &&
@@ -227,9 +283,6 @@ export default {
     }
   },
   methods: {
-    /* En vez de mutar wizardData, emitimos un evento.
-       El Wizard escuchará estos eventos y actualizará wizardData. */
-
     emitCategoria(value) {
       this.$emit("updateCategoria", value);
     },
@@ -242,7 +295,9 @@ export default {
     emitDesayuno(value) {
       this.$emit("updateDesayuno", value);
     },
-
+    goPrevStep() {
+      this.$emit("goPrevStep");
+    },
     goNextStep() {
       this.$emit("goNextStep");
     }
@@ -258,7 +313,7 @@ export default {
   padding: 20px;
 }
 
-/* Texto grande y pequeño */
+/* Texto grande/pequeño */
 .section-title {
   font-size: 1.2rem;
   font-weight: bold;
@@ -270,27 +325,22 @@ export default {
   color: #555;
 }
 
-/* Sección */
-.section {
-  margin-bottom: 5px;
-}
-
-/* Doble espacio */
+/* Espacio doble */
 .double-space {
   margin: 30px 0;
 }
 
-/* Fila de opciones */
+/* Fila de opciones, centradas */
 .options-row {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
   margin-bottom: 10px;
 }
 
-/* Tarjeta de cada opción */
+/* Tarjeta de opción */
 .option-card {
-  width: 300px;
+  width: 300px; /* Ajusta el tamaño global */
   background-color: #f9f9f9;
   border-radius: 8px;
   padding: 10px;
@@ -298,48 +348,88 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; 
+}
+
+/* Contenedor de imagen + recargo */
+.image-container {
+  position: relative;
+  width: 100%;
 }
 
 /* Imagen 16:9 */
 .option-img {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 8px;
 }
 
-/* Texto grande y pequeño */
+/* Recargo circular */
+.recargo-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: #000;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Textos */
 .option-text-large {
   font-weight: bold;
   font-size: 0.95rem;
-  margin-bottom: 4px;
+  margin: 8px 0 2px 0; 
+  text-align: center;
 }
 .option-text-small {
-  font-size: 0.85rem;
-  white-space: pre-line;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
-/* Radio input */
+/* Radio en esquina sup derecha */
 .option-card input[type="radio"] {
   position: absolute;
   top: 10px;
   right: 10px;
 }
 
-/* Barra separadora */
-.long-separator {
+/* Barra separadora corta, centrada, discreta */
+.short-separator {
+  width: 50px;
+  margin: 20px auto; 
   border: none;
   border-top: 1px solid #ccc;
-  margin: 20px 0;
 }
 
-/* CTA negro centrado */
+/* CTA wrapper */
 .cta-wrapper {
-  text-align: center;
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
+
+/* Botón "Atrás" amarillo */
+.cta-back {
+  background-color: #fff176;
+  color: #555;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Botón "Continuar" negro */
 .cta-black {
   background-color: #000;
   color: #fff;
