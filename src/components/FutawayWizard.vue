@@ -17,7 +17,7 @@
         @goNextStep="nextStep"
       />
 
-      <!-- Step2 (Calendario con rango, sin botones amarillos) -->
+      <!-- Step2 (Calendario con rango) -->
       <FutawayStep2
         v-else-if="step === 2"
         :wizard-data="wizardData"
@@ -37,10 +37,13 @@
         @goNextStep="nextStep"
       />
 
-      <!-- Step4 -->
+      <!-- Step4 (Descartes) -->
       <FutawayStep4
         v-else-if="step === 4"
-        :wizard-data="wizardData"
+        :descartes="wizardData.descartes"
+        @update:descartes="val => (wizardData.descartes = val)"
+        @goPrevStep="prevStep"
+        @goNextStep="nextStep"
       />
 
       <!-- Step5 -->
@@ -50,8 +53,8 @@
         :final-price="finalPrice"
       />
 
-      <!-- Navegación amarilla (solo visible en steps >=4) -->
-      <div class="wizard-navigation" v-if="step !== 1 && step !== 2 && step !== 3">
+      <!-- Navegación amarilla (solo visible en steps >=5) -->
+      <div class="wizard-navigation" v-if="step !== 1 && step !== 2 && step !== 3 && step !== 4">
         <button v-if="step > 1" @click="prevStep">Atrás</button>
         <button v-if="step < finalStep" @click="nextStep">Continuar</button>
         <button v-else @click="finalizeWizard">Finalizar</button>
@@ -133,10 +136,8 @@ export default {
         price += (config.desayunoCost[true] || 0) * numPersonas;
       }
 
-      // Descartes
-      const totalDescartes = this.wizardData.descartes?.length || 0;
-      const free = config.freeDiscardCount || 3;
-      const extraDescartes = totalDescartes - free;
+      // Descartes extras
+      const extraDescartes = (this.wizardData.descartes?.length || 0) - (config.freeDiscardCount || 3);
       if (extraDescartes > 0) {
         price += extraDescartes * (config.discardCost || 6) * numPersonas;
       }
@@ -145,18 +146,13 @@ export default {
     }
   },
   methods: {
-    // Método para volver al Step1 (ej: clic en logo)
     goToStep1() {
       this.step = 1;
     },
-
-    // Step2 => Rango de fechas
     handleRange(range) {
       this.wizardData.startDate = range.start;
       this.wizardData.endDate = range.end;
     },
-
-    // Step3 => Asignar opciones
     updateCategoria(value) {
       this.wizardData.categoria = value;
     },
@@ -169,7 +165,6 @@ export default {
     updateDesayuno(value) {
       this.wizardData.desayuno = value;
     },
-
     nextStep() {
       if (this.step < this.finalStep) {
         this.step++;
@@ -204,15 +199,11 @@ export default {
   border-radius: 8px;
   padding: 15px;
 }
-
-/* Navegación amarilla solo si step >=4 */
 .wizard-navigation {
   margin-top: 10px;
   display: flex;
   gap: 10px;
 }
-
-/* Botones amarillos steps >=4 */
 button {
   padding: 8px 16px;
   background-color: #fff176;

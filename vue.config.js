@@ -1,4 +1,5 @@
-// vue.config.js
 module.exports = {
-  transpileDependencies: []
+  transpileDependencies: [
+    'preline'
+  ]
 }

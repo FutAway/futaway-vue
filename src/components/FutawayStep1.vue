@@ -1,29 +1,30 @@
-<!-- src/components/FutawayStep1.vue -->
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <div class="step1-background">
-    <div class="step1-container">
-      <!-- Pestañas: z-index menor -->
-      <div class="tabs-container">
-        <div
-          :class="['tab', { active: selectedTab === 'reservar' }]"
-          @click="selectedTab = 'reservar'"
-        >
-          Reservar
-        </div>
-        <div
-          :class="['tab', { active: selectedTab === 'regalar' }]"
-          @click="selectedTab = 'regalar'"
-        >
-          Regalar
-        </div>
+    <!-- Contenedor de pestañas por fuera del bloque blanco -->
+    <div class="tabs-wrapper">
+      <div
+        :class="['tab', { active: selectedTab === 'reservar' }]"
+        @click="selectedTab = 'reservar'"
+      >
+        <!-- Icono de oh-vue-icons -->
+        <o-icon name="gi-soccer-kick" class="tab-icon" />
+        Reservar
       </div>
+      <div
+        :class="['tab', { active: selectedTab === 'regalar' }]"
+        @click="selectedTab = 'regalar'"
+      >
+        <o-icon name="gi-present" class="tab-icon" />
+        Regalar
+      </div>
+    </div>
 
-      <!-- Contenido de los desplegables y el botón -->
+    <div class="step1-container">
       <div class="fields-row">
-        <!-- Personas -->
+        <!-- Campo Personas -->
         <div class="field">
           <label>¿Cuántos sois?</label>
+          <!-- eslint-disable-next-line vue/no-mutating-props -->
           <select v-model="wizardData.personas">
             <option value="" disabled selected hidden>Elige número de personas</option>
             <option value="1">1 persona (+50€)</option>
@@ -35,12 +36,12 @@
           </select>
         </div>
 
-        <!-- Separador -->
         <div class="separator"></div>
 
-        <!-- Días -->
+        <!-- Campo Días -->
         <div class="field">
           <label>¿Cuántos días?</label>
+          <!-- eslint-disable-next-line vue/no-mutating-props -->
           <select v-model="wizardData.dias">
             <option value="" disabled selected hidden>Elige número de días</option>
             <option value="2">2 días / 1 noche</option>
@@ -49,7 +50,7 @@
           </select>
         </div>
 
-        <!-- Botón Comenzar (bloqueado si no hay selección en ambos) -->
+        <!-- Botón Comenzar -->
         <button
           class="cta-button"
           :disabled="!wizardData.personas || !wizardData.dias"
@@ -74,15 +75,13 @@ export default {
   data() {
     return {
       selectedTab: 'reservar'
-    };
+    }
   },
   methods: {
     startJourney() {
       if (this.selectedTab === 'reservar') {
-        // Emitir un evento para avanzar al siguiente step
         this.$emit('goNextStep')
       } else {
-        // Lógica para 'regalar'
         alert("Flujo de Regalar aún no implementado.");
       }
     }
@@ -91,58 +90,63 @@ export default {
 </script>
 
 <style scoped>
-/* Fondo negro: más espacio arriba (por ej. 120px) y menos abajo (40px) */
+/* Fondo negro */
 .step1-background {
   background-color: #000;
-  padding-top: 120px;
+  padding-top: 80px;
   padding-bottom: 40px;
 }
 
-/* Bloque blanco con menos padding vertical (20px) */
+/* Pestañas por fuera del contenedor blanco */
+.tabs-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  width: 60%;
+  margin: 0 auto; /* centrado horizontal */
+  margin-bottom: 10px; /* un poco de espacio antes del bloque blanco */
+}
+
+/* Cada pestaña => mismo ancho => flex:1; pegadas => border-right */
+.tab {
+  background-color: #767676;
+  color: #fff;
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  padding: 8px 0;
+  cursor: pointer;
+  border-radius: 0;
+  border-right: 1px solid #ddd;
+}
+.tab:last-child {
+  border-right: none;
+}
+
+/* Pestaña activa => fondo blanco, texto gris */
+.tab.active {
+  background-color: #fff;
+  color: #767676;
+}
+
+/* Icono dentro de la pestaña */
+.tab-icon {
+  margin-right: 6px;
+}
+
+/* Bloque blanco */
 .step1-container {
-  position: relative;
-  z-index: 2;
   width: 60%;
   margin: 0 auto;
   background-color: #fff;
   border-radius: 8px;
-  padding: 20px; /* antes 40px => ahora más estrecho en Y */
+  padding: 10px 20px; /* Ajustado para menos aire arriba */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  overflow: visible;
 }
 
-/* Pestañas detrás del bloque blanco */
-.tabs-container {
-  position: absolute;
-  z-index: 1;
-  top: -39.4px; /* Ajusta si quieres sacarlas más o menos */
-  left: 20px;
-  display: flex;
-  gap: 2px;
-}
-
-/* Cada pestaña */
-.tab {
-  background-color: #767676;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 8px 8px 0 0;
-  cursor: pointer;
-  font-weight: bold;
-}
-.tab.active {
-  background-color: #fff;
-  color: #767676;
-  border: 1px solid #ddd;
-  border-bottom: none;
-}
-
-/* Fila de campos y botón */
+/* Fila con los campos y botón */
 .fields-row {
-  margin-top: 20px; /* Menos espacio arriba => bloque más estrecho en Y */
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
   gap: 20px;
 }
 
@@ -203,8 +207,19 @@ export default {
 
 /* Responsive */
 @media (max-width: 768px) {
+  .tabs-wrapper,
   .step1-container {
     width: 90%;
+  }
+  .tabs-wrapper {
+    flex-direction: column;
+  }
+  .tab {
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+  }
+  .tab:last-child {
+    border-bottom: none;
   }
   .fields-row {
     flex-direction: column;
@@ -216,9 +231,6 @@ export default {
   .cta-button {
     margin-top: 10px;
     margin-left: 0;
-  }
-  .tabs-container {
-    left: 10px;
   }
 }
 </style>
