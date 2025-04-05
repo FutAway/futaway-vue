@@ -1,15 +1,27 @@
+@font-face {
+  font-family: 'Zuume Edge';
+  src: url('./fonts/zuume-edge.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
-    /* Paleta de colores */
-    --bg-color: #fbfbfb;       /* Fondo blanco */
-    --text-color: #262626;     /* Texto en negro carbón */
-    --accent-color: #ffef98;   /* Acento en amarillo */
-  }
-  
-  /* Estilos globales */
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-  }
+  /* Paleta de colores */
+  --bg-color: #fbfbfb;       /* Fondo blanco */
+  --text-color: #262626;     /* Texto en negro carbón */
+  --accent-color: #ffef98;   /* Acento en amarillo */
+}
+
+/* Estilos globales */
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Aplicar la fuente "Zuume Edge" a títulos principales */
+h1, h2, h3, .titulo-principal {
+  font-family: 'Zuume Edge', sans-serif;
+}
