@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- Incluimos el header -->
-    <DarkFloatingHeader />
     <!-- Wizard -->
     <FutawayWizard ref="wizard" />
   </div>
@@ -9,13 +7,11 @@
 
 <script>
 import FutawayWizard from "./components/FutawayWizard.vue";
-import DarkFloatingHeader from "./components/DarkFloatingHeader.vue";
 
 export default {
   name: "App",
   components: {
-    FutawayWizard,
-    DarkFloatingHeader
+    FutawayWizard
   }
 };
 </script>
