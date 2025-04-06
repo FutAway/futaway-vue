@@ -15,6 +15,7 @@
         v-if="step === 1"
         :wizard-data="wizardData"
         @goNextStep="nextStep"
+        @goGiftJourney="goGiftStep"
       />
 
       <!-- Step2 (Calendario con rango) -->
@@ -51,6 +52,7 @@
         v-else-if="step === 5"
         :wizard-data="wizardData"
         :final-price="finalPrice"
+        @goPrevStep="prevStep"
       />
 
       <!-- Navegación amarilla (solo visible en steps >=5) -->
@@ -177,6 +179,10 @@ export default {
     },
     goBackToStep2() {
       this.step = 2;
+    },
+    // NUEVO: Si el usuario clica en "Regalar" (Step1) => saltar al Step5
+    goGiftStep() {
+      this.step = 5;
     },
     finalizeWizard() {
       alert(

@@ -139,7 +139,8 @@
 
     <!-- CTA final: Dos botones centrados -->
     <div class="cta-row">
-      <button class="btn-back" @click="goBack">Atrás</button>
+      <!-- NUEVO => Emitimos "goPrevStep" para volver atrás si se quiere -->
+      <button class="btn-back" @click="$emit('goPrevStep')">Atrás</button>
       <button class="btn-confirm" @click="goToPayment">Realizar pago</button>
     </div>
   </div>
@@ -199,10 +200,6 @@ export default {
       if (!this.wizardData.endDate) return "";
       const parts = this.wizardData.endDate.split("-");
       return `${parts[2]}/${parts[1]}`;
-    },
-    unitPrice() {
-      const persons = Number(this.wizardData.personas) || 0;
-      return persons === 1 ? 250 : 200;
     },
     summaryLines() {
       const persons = Number(this.wizardData.personas) || 0;
@@ -296,9 +293,6 @@ export default {
     }
   },
   methods: {
-    goBack() {
-      this.$emit("goPrevStep");
-    },
     goToPayment() {
       if (!this.acceptedTerms || !this.selectedMethod) {
         alert("Selecciona un método de pago y acepta los Términos y Condiciones.");

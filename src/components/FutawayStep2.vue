@@ -1,4 +1,3 @@
-<!-- src/components/FutawayStep2.vue -->
 <template>
   <div class="step2-container">
     <h1 class="title-large">{{ titleLarge }}</h1>
@@ -6,6 +5,7 @@
 
     <!-- Calendario centrado -->
     <div class="calendar-wrapper">
+      <!-- El calendario se inyecta aquí vía flatpickr -->
       <div class="calendar-block" ref="calendar"></div>
     </div>
 
@@ -42,7 +42,6 @@ export default {
       fpInstance: null,
       isSettingRange: false, // Evita recursión al llamar setDate
       isDateSelected: false  // Para habilitar/deshabilitar el CTA
-      // blockedDates: []  // Si quisieras bloquear alguna fecha
     };
   },
   methods: {
@@ -94,7 +93,6 @@ export default {
       mode: "range",
       onChange: this.onDateChange,
       locale: Spanish
-      // disable: this.blockedDates // Si quisieras bloquear fechas
     });
   },
   beforeUnmount() {
@@ -117,6 +115,9 @@ export default {
 .title-large {
   font-size: 1.8rem;
   margin-bottom: 5px;
+  /* Si quieres usar "Zuume Edge":
+  font-family: "Zuume Edge", sans-serif;
+  */
 }
 
 .title-small {
@@ -131,11 +132,18 @@ export default {
   justify-content: center;
 }
 
+/* Bloque donde se inyecta el calendario */
 .calendar-block {
   background-color: #fff;
-  padding: 10px;
+  /* Aumentamos el padding lateral para dar más aire alrededor de los números periféricos */
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Ocultar el input "fantasma" de flatpickr si no se usa */
+:deep(.flatpickr-input) {
+  display: none !important;
 }
 
 /* CTA negro la mitad de tamaño */
@@ -146,8 +154,8 @@ export default {
 .cta-black {
   background-color: #000;
   color: #fff;
-  padding: 10px 24px; /* Mitad del anterior (antes era 20px 48px) */
-  font-size: 0.9rem; /* Un poco más pequeño */
+  padding: 10px 24px; /* Mitad del anterior (antes era ~20px 48px) */
+  font-size: 0.9rem;
   border: none;
   border-radius: 4px;
   font-weight: bold;
@@ -160,19 +168,31 @@ export default {
   cursor: not-allowed;
 }
 
-/* Días seleccionados en amarillo */
-:deep(.flatpickr-day.selected),
-:deep(.flatpickr-day.startRange),
-:deep(.flatpickr-day.endRange),
-:deep(.flatpickr-day.inRange) {
-  background: #fff176 !important; /* tu amarillo */
-  color: #262626 !important;
-  border-radius: 4px !important;
+/* ---------- ESTÉTICA DE LA SELECCIÓN DE FECHAS ---------- */
+
+/* Día actual => círculo gris, número en negrita (negro) */
+:deep(.flatpickr-day.today) {
+  background: #ccc !important; /* gris */
+  color: #000 !important;      /* número negro */
+  border-radius: 50% !important;
+  font-weight: bold;
+  border: none !important;
 }
 
-/* Si quieres ocultar la cabecera (el botón blanco) de Flatpickr:
-:deep(.flatpickr-current-month) {
-  display: none;
+/* Días intermedios => rectángulo amarillo con texto en negro */
+:deep(.flatpickr-day.inRange) {
+  background: #fff176 !important;  /* amarillo */
+  color: #000 !important;
+  border: none !important;
+  border-radius: 4px !important;   /* si quieres con esquinas redondeadas */
 }
-*/
+
+/* Día de inicio/final => rectángulo relleno de negro, texto en blanco */
+:deep(.flatpickr-day.startRange),
+:deep(.flatpickr-day.endRange) {
+  background: #000 !important;  /* relleno negro */
+  color: #fff !important;       /* texto blanco */
+  border: none !important;
+  border-radius: 4px !important;
+}
 </style>

@@ -225,16 +225,19 @@ export default {
 
 /* Título de "Precio final" */
 .sidebar-price-title {
-  font-size: 0.9rem;
+  font-size: 1.0rem;
   font-weight: bold;
   margin-bottom: 5px;
+  font-family: 'Zuume Edge', sans-serif;
 }
 
 /* Precio final (triple tamaño) */
 .sidebar-price {
   font-size: 2.4rem;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-family: 'Zuume Edge', sans-serif;
+
 }
 
 /* Línea de separación */

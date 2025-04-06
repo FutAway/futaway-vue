@@ -6,15 +6,16 @@
         :class="['tab', { active: selectedTab === 'reservar' }]"
         @click="selectedTab = 'reservar'"
       >
-        <!-- Icono de oh-vue-icons -->
-        <o-icon name="gi-soccer-kick" class="tab-icon" />
+        <!-- Icono de PrimeVue -->
+        <i class="pi pi-star tab-icon"></i>
         Reservar
       </div>
       <div
         :class="['tab', { active: selectedTab === 'regalar' }]"
         @click="selectedTab = 'regalar'"
       >
-        <o-icon name="gi-present" class="tab-icon" />
+        <!-- Icono de PrimeVue -->
+        <i class="pi pi-gift tab-icon"></i>
         Regalar
       </div>
     </div>
@@ -80,9 +81,11 @@ export default {
   methods: {
     startJourney() {
       if (this.selectedTab === 'reservar') {
+        // Flujo normal => Step2
         this.$emit('goNextStep')
       } else {
-        alert("Flujo de Regalar aún no implementado.");
+        // NUEVO => Enviar directo al Step5
+        this.$emit('goGiftJourney')
       }
     }
   }
@@ -90,10 +93,14 @@ export default {
 </script>
 
 <style scoped>
-/* Fondo negro */
+/* Fondo editable desde CMS:
+   - 25% más estrecho (width: 75%) y 33% más alto.
+   - Ajuste de padding para ubicar el contenido más cerca del borde inferior. */
 .step1-background {
-  background-color: #000;
-  padding-top: 80px;
+  width: 75%;           /* Más estrecho en eje X */
+  margin: 0 auto;
+  background-color: #000; 
+  padding-top: 240px;   /* Ajustado para posicionar más abajo */
   padding-bottom: 40px;
 }
 
@@ -102,8 +109,8 @@ export default {
   display: flex;
   justify-content: flex-start;
   width: 60%;
-  margin: 0 auto; /* centrado horizontal */
-  margin-bottom: 10px; /* un poco de espacio antes del bloque blanco */
+  margin: 0 auto;       /* centrado horizontal */
+  margin-bottom: 10px;  /* un poco de espacio antes del bloque blanco */
 }
 
 /* Cada pestaña => mismo ancho => flex:1; pegadas => border-right */
@@ -155,6 +162,7 @@ export default {
   display: flex;
   flex-direction: column;
   flex: 1;
+  font-family: 'Zuume Edge', sans-serif;
 }
 .field label {
   margin-bottom: 5px;
@@ -177,7 +185,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px 40px 8px 8px;
-  font-size: 14px;
+  font-size: 12px;
   color: #262626;
   max-width: 200px;
   background-image: url("data:image/svg+xml,%3Csvg%20fill='%23666666'%20height='24'%20viewBox='0%200%2024%2024'%20width='24'%20xmlns='http://www.w3.org/2000/svg'%3E%3Cpath%20d='M7%2010l5%205%205-5z'%3E%3C/path%3E%3C/svg%3E");
