@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="step1-root">
     <!-- CONTENEDOR VIDEO: Pestañas, desplegables y CTA -->
     <div class="step1-background">
       <!-- Vídeo de fondo -->
@@ -78,51 +78,11 @@
     <div class="additional-info">
       <!-- Título principal grande, centrado -->
       <div class="how-it-works">
-        <h1>{{ wizardData.howItWorksTitle || "¿Cómo funciona una aventura FutAway?" }}</h1>
+        <h1>{{ wizardData.howItWorksTitle || "¡Tu aventura FutAway comienza aquí!" }}</h1>
       </div>
-
-      <!-- BLOQUE 1: Imagen izquierda, texto derecha -->
-      <div class="info-section">
-        <div class="info-image">
-          <img :src="wizardData.featureImage || 'https://via.placeholder.com/640x160'" alt="Información FutAway" />
-        </div>
-        <div class="info-text">
-          <h2>{{ wizardData.featureTitle || "ELIGE TU FECHA" }}</h2>
-          <p>{{ wizardData.featureDescription || "Tú decides la jornada, nosotros nos encargamos del resto. ¡La emoción empieza aquí!" }}</p>
-        </div>
-      </div>
-
-      <!-- BLOQUE 2: Texto izquierda, imagen derecha -->
-      <div class="info-section reverse">
-        <div class="info-text">
-          <h2>{{ wizardData.feature2Title || "PERSONALIZA TU EXPERIENCIA" }}</h2>
-          <p>{{ wizardData.feature2Description || "Descarta hasta 3 destinos gratis y deja que la magia del fútbol haga el resto." }}</p>
-        </div>
-        <div class="info-image">
-          <img :src="wizardData.feature2Image || 'https://via.placeholder.com/640x160'" alt="Personaliza tu experiencia" />
-        </div>
-      </div>
-
-      <!-- BLOQUE 3: Imagen izquierda, texto derecha -->
-      <div class="info-section">
-        <div class="info-image">
-          <img :src="wizardData.feature3Image || 'https://via.placeholder.com/640x160'" alt="Recibe tu paquete sorpresa" />
-        </div>
-        <div class="info-text">
-          <h2>{{ wizardData.feature3Title || "RECIBE TU PAQUETE SORPRESA" }}</h2>
-          <p>{{ wizardData.feature3Description || "48 horas antes, descubre tu destino con una bufanda y una guía futbolera exclusiva." }}</p>
-        </div>
-      </div>
-
-      <!-- BLOQUE 4: Texto izquierda, imagen derecha -->
-      <div class="info-section reverse">
-        <div class="info-text">
-          <h2>{{ wizardData.feature4Title || "VIAJA, VIBRA, DISFRUTA" }}</h2>
-          <p>{{ wizardData.feature4Description || "Haz las maletas, siente la pasión en el estadio y vive un finde inolvidable. ¡El fútbol te espera!" }}</p>
-        </div>
-        <div class="info-image">
-          <img :src="wizardData.feature4Image || 'https://via.placeholder.com/640x160'" alt="Viaja, vibra, disfruta" />
-        </div>
+      <!-- Montaje Step1 image -->
+      <div class="montaje-container">
+        <img src="@/assets/Montaje_Step1.png" alt="Montaje Step1" />
       </div>
     </div>
   </div>
@@ -162,6 +122,7 @@ export default {
   position: relative;
   aspect-ratio: 1920 / 800;
   overflow: hidden;
+  margin-top: -15px;
 }
 
 .step1-video {
@@ -277,8 +238,8 @@ export default {
   background-color: #e0e0e0;
 }
 .additional-info {
-  width: 75%;
-  margin: 40px auto 0 auto;
+  width: 100%;
+  margin: 40px auto 40px auto;
 }
 .how-it-works {
   text-align: center;
@@ -286,8 +247,9 @@ export default {
 }
 .how-it-works h1 {
   font-family: 'Zuume Edge', sans-serif;
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   color: #262626;
+  text-shadow: 0 0 8px #ffef98, 0 0 16px #ffef98;
 }
 .info-section {
   display: flex;
@@ -355,4 +317,18 @@ export default {
     flex-direction: column;
   }
 }
+.montaje-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  margin: 0 auto;
+}
+.montaje-container img {
+  max-width: 100%;
+  height: auto;
+}
 </style>
+.step1-root {
+  overflow-x: hidden;
+}

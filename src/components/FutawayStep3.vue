@@ -7,7 +7,11 @@
 
       <div class="options-row">
         <!-- Opción 1 -->
-        <div class="option-card" @click="emitCategoria('primera-segunda')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.categoria === 'primera-segunda' }"
+          @click="emitCategoria('primera-segunda')"
+        >
           <div class="image-container">
             <img :src="sec1Option1.img" alt="Imagen Fútbol" class="option-img" />
             <div v-if="sec1Option1.recargo" class="recargo-badge">
@@ -25,7 +29,11 @@
         </div>
 
         <!-- Opción 2 -->
-        <div class="option-card" @click="emitCategoria('solo-segunda')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.categoria === 'solo-segunda' }"
+          @click="emitCategoria('solo-segunda')"
+        >
           <div class="image-container">
             <img :src="sec1Option2.img" alt="Imagen Fútbol" class="option-img" />
             <div v-if="sec1Option2.recargo" class="recargo-badge">
@@ -53,7 +61,11 @@
 
       <div class="options-row">
         <!-- Opción 1 -->
-        <div class="option-card" @click="emitJornada('toda')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.jornada === 'toda' }"
+          @click="emitJornada('toda')"
+        >
           <div class="image-container">
             <img :src="sec2Option1.img" alt="Imagen Jornada" class="option-img" />
             <div v-if="sec2Option1.recargo" class="recargo-badge">
@@ -71,7 +83,11 @@
         </div>
 
         <!-- Opción 2 -->
-        <div class="option-card" @click="emitJornada('sin-viernes-lunes')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.jornada === 'sin-viernes-lunes' }"
+          @click="emitJornada('sin-viernes-lunes')"
+        >
           <div class="image-container">
             <img :src="sec2Option2.img" alt="Imagen Jornada" class="option-img" />
             <div v-if="sec2Option2.recargo" class="recargo-badge">
@@ -101,7 +117,11 @@
 
       <div class="options-row">
         <!-- Hotel Estándar -->
-        <div class="option-card" @click="emitHotel('estandar')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.hotel === 'estandar' }"
+          @click="emitHotel('estandar')"
+        >
           <div class="image-container">
             <img :src="sec3Option1.img" alt="Imagen Hotel" class="option-img" />
             <div v-if="sec3Option1.recargo" class="recargo-badge">
@@ -119,7 +139,11 @@
         </div>
 
         <!-- Hotel Superior -->
-        <div class="option-card" @click="emitHotel('superior')">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.hotel === 'superior' }"
+          @click="emitHotel('superior')"
+        >
           <div class="image-container">
             <img :src="sec3Option2.img" alt="Imagen Hotel" class="option-img" />
             <div v-if="sec3Option2.recargo" class="recargo-badge">
@@ -147,7 +171,11 @@
     <div class="section">
       <div class="options-row">
         <!-- Sin desayuno -->
-        <div class="option-card" @click="emitDesayuno(false)">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.desayuno === false }"
+          @click="emitDesayuno(false)"
+        >
           <div class="image-container">
             <img :src="sec4Option1.img" alt="Imagen Desayuno" class="option-img" />
             <div v-if="sec4Option1.recargo" class="recargo-badge">
@@ -165,7 +193,11 @@
         </div>
 
         <!-- Desayuno incluido -->
-        <div class="option-card" @click="emitDesayuno(true)">
+        <div
+          class="option-card"
+          :class="{ selected: wizardData.desayuno === true }"
+          @click="emitDesayuno(true)"
+        >
           <div class="image-container">
             <img :src="sec4Option2.img" alt="Imagen Desayuno" class="option-img" />
             <div v-if="sec4Option2.recargo" class="recargo-badge">
@@ -204,6 +236,14 @@
 </template>
 
 <script>
+import tagPrimSeg from '@/assets/tags_custom/tag_primeraysegunda.png';
+import tagSoloPrimera from '@/assets/tags_custom/tag_soloprimera.png';
+import tagTodaJornada from '@/assets/tags_custom/tag_jornadacompleta.png';
+import tagSinLunes from '@/assets/tags_custom/tag_sinlunes.png';
+import tagHotelEstandar from '@/assets/tags_custom/tag_hotelestandar.png';
+import tagHotelSuperior from '@/assets/tags_custom/tag_hotelsuperior.png';
+import tagSinDesayuno from '@/assets/tags_custom/tag_sindesayuno.png';
+import tagDesayunoIncluido from '@/assets/tags_custom/tag_desayuno.png';
 export default {
   name: "FutawayStep3",
   props: {
@@ -215,57 +255,57 @@ export default {
   data() {
     return {
       sec1Title: "Fútbol de categoría",
-      sec1Desc: "Eliges optar solo a partidos de Segunda División y ahorra en tu experiencia.",
+      sec1Desc: "Eliges optar solo a partidos de Primera División.",
       sec1Option1: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Futbol",
+        img: tagPrimSeg,
         title: "Partidos de Primera y Segunda",
         subtitle: "",
         recargo: 0
       },
       sec1Option2: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Futbol",
-        title: "Solo partidos de Segunda",
+        img: tagSoloPrimera,
+        title: "Solo partidos de Primera",
         subtitle: "",
-        recargo: 25
+        recargo: 30
       },
 
-      sec2Title: "¿Partidos de viernes y lunes?",
-      sec2Desc: "Elige qué día quieres que se dispute el partido al que asistirás.",
+      sec2Title: "¿Partidos los lunes?",
+      sec2Desc: "Elige si quieres optar al partido de los lunes.",
       sec2Option1: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Jornada",
+        img: tagTodaJornada,
         title: "Toda la jornada",
         subtitle: "",
         recargo: 0
       },
       sec2Option2: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Jornada",
-        title: "Jornada sin viernes ni lunes",
+        img: tagSinLunes,
+        title: "Jornada sin lunes",
         subtitle: "",
-        recargo: 25
+        recargo: 10
       },
 
       sec3Title: "¿Cómo quieres que sea tu alojamiento?",
       sec3Option1: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Hotel",
+        img: tagHotelEstandar,
         title: "Hotel Estándar",
         subtitle: "Aseguran al menos 3 estrellas.",
         recargo: 0
       },
       sec3Option2: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Hotel",
+        img: tagHotelSuperior,
         title: "Hotel Superior",
         subtitle: "Aseguran al menos 4 estrellas.",
         recargo: 40
       },
 
       sec4Option1: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Desayuno",
+        img: tagSinDesayuno,
         title: "Sin desayuno",
         subtitle: "",
         recargo: 0
       },
       sec4Option2: {
-        img: "https://via.placeholder.com/300x169?text=Imagen+Desayuno",
+        img: tagDesayunoIncluido,
         title: "Desayuno incluido",
         subtitle: "",
         recargo: 6
@@ -341,7 +381,7 @@ export default {
 /* Tarjeta de opción */
 .option-card {
   width: 300px; /* Ajusta el tamaño global */
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 8px;
   padding: 10px;
   cursor: pointer;
@@ -365,22 +405,29 @@ export default {
   border-radius: 4px;
 }
 
-/* Recargo circular */
+/* Recargo badge rectangular y fijo */
 .recargo-badge {
   position: absolute;
-  bottom: 8px;
-  right: 8px;
-  background-color: #000;
+  bottom: 12px;
+  right: 12px;
+  background-color: #262626;
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  border-radius: 50%;
-  width: 34px;
-  height: 34px;
+  border-radius: 4px;
+  width: 56px;
+  height: 28px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.option-card:hover .recargo-badge {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 /* Textos */
@@ -400,6 +447,15 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.option-card.selected {
+  border: 2px solid #ffef98;
+  background-color: #ffef98;
+}
+
+.option-card input[type="radio"] {
+  display: none;
 }
 
 /* Barra separadora corta, centrada, discreta */

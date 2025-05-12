@@ -74,7 +74,7 @@
     /* full‑width breakout */
     position: relative;
     left: 50%;
-    margin-left: -50vw;
+    transform: translateX(-50%);
     width: 100vw;
 
     /* padding interior */
@@ -222,4 +222,11 @@
       margin-top: 1.5rem; /* más espacio abajo en mobile */
     }
   }
+
   </style>
+
+<style>
+html, body {
+  overflow-x: hidden;
+}
+</style>

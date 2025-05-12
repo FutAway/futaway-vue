@@ -55,12 +55,6 @@
         @goPrevStep="prevStep"
       />
 
-      <!-- Navegación amarilla (solo visible en steps >=5) -->
-      <div class="wizard-navigation" v-if="step !== 1 && step !== 2 && step !== 3 && step !== 4">
-        <button v-if="step > 1" @click="prevStep">Atrás</button>
-        <button v-if="step < finalStep" @click="nextStep">Continuar</button>
-        <button v-else @click="finalizeWizard">Finalizar</button>
-      </div>
     </div>
   </div>
 </template>

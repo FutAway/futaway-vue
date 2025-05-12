@@ -12,11 +12,11 @@ export default {
     // Datos de Step 3: Personalización
     categoryCost: {
       "primera-segunda": 0,    // No hay recargo
-      "solo-segunda": -25,     // -25€ por persona
+      "solo-segunda": 30,     // +30€ por persona
     },
     jornadaCost: {
       toda: 0,                 // Sin recargo
-      "sin-viernes-lunes": 25, // +25€ por persona
+      "sin-viernes-lunes": 10, // +10€ por persona
     },
     hotelCost: {
       estandar: 0,
@@ -28,8 +28,8 @@ export default {
     },
   
     // Datos de Step 4: Descartes de Estadios
-    freeDiscardCount: 3,     // Número de descartes gratis
-    discardCost: 6,          // +6€ por persona por cada descarte extra
+    freeDiscardCount: 1,     // Número de descartes gratis
+    discardCost: 5,          // +6€ por persona por cada descarte extra
   
     // Otros textos o valores (por ejemplo, textos de botones, mensajes, etc.) pueden agregarse aquí.
   };

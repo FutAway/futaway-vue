@@ -3,7 +3,7 @@
     <!-- Título principal -->
     <h2 class="title-step4">¿A qué estadios no quieres ir?</h2>
     <!-- Subtítulo -->
-    <p class="subtitle-step4">Descarta 3 destinos gratis y paga 6€ a partir del cuarto, hasta un máximo de 10</p>
+    <p class="subtitle-step4">Descarta un máximo de cinco destinos... ¡te regalamos el primero!</p>
 
     <div class="stadiums-grid">
       <div
@@ -17,7 +17,7 @@
           <img
             class="stadium-image"
             :src="stadium.image"
-            :alt="stadium.name"
+            alt=""
           />
           <!-- Etiqueta GRATIS / +6€ -->
           <div
@@ -26,10 +26,6 @@
           >
             {{ discardTag(stadium.id) }}
           </div>
-        </div>
-        <!-- Nombre del estadio, POR FUERA y POR DEBAJO de la imagen -->
-        <div class="stadium-caption">
-          {{ stadium.name }}
         </div>
       </div>
     </div>
@@ -53,32 +49,21 @@ export default {
     }
   },
   data() {
+    const tagNames = [
+      'tag_barcelona', 'tag_sevilla', 'tag_espanyol', 'tag_cadiz',
+      'tag_mirandes', 'tag_racingferrol', 'tag_racingsantander', 'tag_valladolid',
+      'tag_valencia', 'tag_zaragoza', 'tag_malaga', 'tag_oviedo',
+      'tag_sporting', 'tag_leganes', 'tag_getafe', 'tag_athletic',
+      'tag_eldense', 'tag_albacete', 'tag_osasuna', 'tag_huesca',
+      'tag_celta'
+    ];
     return {
       // Copiamos la prop a una variable local para no mutarla directamente
       descartesLocal: [...this.descartes],
-      stadiums: [
-        { id: 1, name: "Estadio 1",  image: "/img/stadium1.jpg" },
-        { id: 2, name: "Estadio 2",  image: "/img/stadium2.jpg" },
-        { id: 3, name: "Estadio 3",  image: "/img/stadium3.jpg" },
-        { id: 4, name: "Estadio 4",  image: "/img/stadium4.jpg" },
-        { id: 5, name: "Estadio 5",  image: "/img/stadium5.jpg" },
-        { id: 6, name: "Estadio 6",  image: "/img/stadium6.jpg" },
-        { id: 7, name: "Estadio 7",  image: "/img/stadium7.jpg" },
-        { id: 8, name: "Estadio 8",  image: "/img/stadium8.jpg" },
-        { id: 9, name: "Estadio 9",  image: "/img/stadium9.jpg" },
-        { id: 10, name: "Estadio 10", image: "/img/stadium10.jpg" },
-        { id: 11, name: "Estadio 11", image: "/img/stadium11.jpg" },
-        { id: 12, name: "Estadio 12", image: "/img/stadium12.jpg" },
-        { id: 13, name: "Estadio 13", image: "/img/stadium13.jpg" },
-        { id: 14, name: "Estadio 14", image: "/img/stadium14.jpg" },
-        { id: 15, name: "Estadio 15", image: "/img/stadium15.jpg" },
-        { id: 16, name: "Estadio 16", image: "/img/stadium16.jpg" },
-        { id: 17, name: "Estadio 17", image: "/img/stadium17.jpg" },
-        { id: 18, name: "Estadio 18", image: "/img/stadium18.jpg" },
-        { id: 19, name: "Estadio 19", image: "/img/stadium19.jpg" },
-        { id: 20, name: "Estadio 20", image: "/img/stadium20.jpg" },
-        { id: 21, name: "Estadio 21", image: "/img/stadium21.jpg" }
-      ]
+      stadiums: tagNames.map((tag, index) => ({
+        id: index + 1,
+        image: require(`@/assets/tags_stadiums/${tag}.png`)
+      })),
     }
   },
   watch: {
@@ -91,8 +76,8 @@ export default {
     toggleDiscard(id) {
       const index = this.descartesLocal.indexOf(id);
       if (index === -1) {
-        // Permitir agregar solo si no se han seleccionado 10 ya
-        if (this.descartesLocal.length < 10) {
+        // Permitir agregar solo si no se han seleccionado 5 ya
+        if (this.descartesLocal.length < 5) {
           this.descartesLocal.push(id);
         }
       } else {
@@ -103,7 +88,7 @@ export default {
     },
     discardTag(stadiumId) {
       const pos = this.descartesLocal.indexOf(stadiumId);
-      return pos < 3 ? "GRATIS" : "+6€";
+      return pos < 1 ? "GRATIS" : "+5€";
     }
   }
 }
@@ -133,28 +118,67 @@ export default {
 }
 
 .stadium-item {
-  background-color: #eee;
+  background-color: transparent;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
-  padding: 10px;
+  padding: 0;
 }
 
 .stadium-item.selected {
-  background-color: #ffe94d;
+  background-color: transparent;
 }
 
-/* Contenedor para la imagen (4:5) */
+/* Contenedor para la imagen (1:1) */
 .image-container {
   position: relative;
+  overflow: hidden;
 }
 
-/* Imagen 4:5 */
+/* Imagen 1:1 */
 .stadium-image {
   width: 100%;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 4px;
+  transition: filter 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stadium-item.selected .stadium-image {
+  filter: brightness(50%) grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+@keyframes shine {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(1.5); }
+  100% { filter: brightness(1); }
+}
+
+@keyframes fancy-shine {
+  0% {
+    filter: brightness(1);
+    transform: scale(1);
+    box-shadow: none;
+  }
+  50% {
+    filter: brightness(1.2);
+    transform: scale(1.03);
+    box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+  }
+  100% {
+    filter: brightness(1);
+    transform: scale(1);
+    box-shadow: none;
+  }
+}
+
+.stadium-item:not(.selected) .stadium-image {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+  transform: scale(1);
+}
+.stadium-item:not(.selected):hover .stadium-image {
+  animation: fancy-shine 0.6s ease-in-out;
 }
 
 /* Nombre del estadio: se muestra POR FUERA de la imagen */
@@ -167,13 +191,26 @@ export default {
 /* Etiqueta GRATIS / +6€ */
 .tag {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: #000;
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 2px 4px;
-  border-radius: 3px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70px;
+  height: 35px;
+  background-color: #fff;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stadium-item.selected:hover .tag {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* CTA centrados */
